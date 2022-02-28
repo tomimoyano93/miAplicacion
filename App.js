@@ -1,5 +1,5 @@
 import React from 'react';
-import {Text, View, Button,} from 'react-native';
+import {Text, View, Button,TextInput} from 'react-native';
 
 const App = () => {
   return (
@@ -14,6 +14,7 @@ const App = () => {
         title="Aplicacion"
         color="#841584"
         accessibilityLabel="Learn more about this purple button"/>
+        <TextInput />
     </View>
   )
 };
