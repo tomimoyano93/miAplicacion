@@ -5,7 +5,8 @@ const App = () => {
   return (
     <View>
       <Text style={{
-        fontSize: 20
+        fontSize: 20,
+        padding: 20
       }}>
         Mi aplicacion
       </Text>
