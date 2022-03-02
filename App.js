@@ -2,7 +2,6 @@ import React from 'react';
 import {Text, View, Button, TextInput, StyleSheet} from 'react-native';
 import styles from './styles';
 
-
 const App = () => {
   return (
     <View style={styles.container}>
