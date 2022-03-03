@@ -1,29 +1,89 @@
-import React from 'react';
-import {Text, View, Button, TextInput, StyleSheet} from 'react-native';
+import React, { useState } from 'react';
+import {Text, View, Button, TextInput, StyleSheet, FlatList, TouchableOpacity, Modal} from 'react-native';
 import styles from './styles';
 
 const App = () => {
+  const [text, setText] = useState('');
+  const [textList, setTextList] = useState([]);
+  const [modalVisible, setModalVisible] = useState(false);
+  const [selectedItem, setSelectedItem] = useState({});
+
+  const handleOnChangeInput = (value) => {
+    setText(value);
+  }
+
+  const addItem = () => {
+    if(text !== ''){
+    setTextList([...textList, { id: textList.length + 1, value: text }]);
+    setText('');
+    }
+  }
+
+  const handleDeleteItem = (id) => {
+    const newList = textList.filter(itemList => itemList.id !== id);
+    setSelectedItem({});
+    setTextList(newList);
+    setModalVisible(!modalVisible);
+  }
+
+  const onHandleModal = (id) => {
+    setSelectedItem(textList.find(itemList => itemList.id === id));
+    setModalVisible(!modalVisible);
+  }
   return (
-    <View style={styles.container}>
-      <Text style={{
-        fontSize: 40,
-        padding: 20
-      }}>
-        Mi aplicacion
-      </Text>
-
-      <TextInput
-        placeholder='escribe aqui'
-        autoFocus={true}
-        placeholderTextColor='#841584'
-        style={styles.textInput}/>
-      <Button
-        onPress={() => null}
-        title="Aplicacion"
-        color="#841584"
-        accessibilityLabel="Learn more about this purple button"/>
+    <View 
+      style={styles.container}
+    >
+      <View style={styles.containerInput}>
+        <TextInput
+          placeholder='Type here'
+          autoCorrect={false}
+          autoFocus={true}
+          placeholderTextColor='#841584'
+          style={styles.textInput}
+          value={text}
+          onChangeText={handleOnChangeInput}
+        />
+        <Button
+          title="Add"
+          color="#841584"
+          onPress={() =>  addItem()}
+          />
+      </View>
+        <View style={styles.containerList}>
+          <FlatList
+            data={textList}
+            renderItem={({ item }) => (
+              <TouchableOpacity onPress={() => onHandleModal(item.id)}>
+                <Text style={styles.textList}>{item.value}</Text>
+              </TouchableOpacity>
+            )}
+            keyExtractor={item => item.id.toString()}
+          />
+      </View>
+        <Modal
+          animationType="slide"
+          visible={modalVisible}
+          transparent={true}
+          >
+            <View style={styles.modalContainerContent}>
+              <View style={styles.modaTitle}>
+                <Text>Description</Text>
+              </View>
+              <View style={styles.modalContent}>
+                  <Text>Do you want to delete this item?</Text>
+                  <Text style={styles}>{selectedItem.value}</Text>
+              </View>
+              <View style={styles.modalButton}>
+                <Button
+                  title="Yes" 
+                  color="#841584"
+                  onPress={() => handleDeleteItem(selectedItem.id)}
+                />
+              </View>
+            </View>
+        </Modal>
     </View>
-  )
+  );
 };
-
 export default App
