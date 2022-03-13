@@ -1,35 +1,37 @@
-import React, { useState } from 'react';
-
+import React, {useState} from 'react';
 import {
   View,
   Button,
   Text,
   FlatList,
   TouchableOpacity,
-  SafeAreaView,
+  SafeAreaView
 } from 'react-native';
-
 import Input from './components/Atoms/Input/index'
 import CustomModal from './components/Molecules/CustomModal';
-import { styles } from './styles';
-
+import {styles} from './styles';
 
 const App = () => {
-  const [text, setText] = useState('');
-  const [textList, setTextList] = useState([]);
-  const [modalVisible, setModalVisible] = useState(false);
-  const [selectedItem, setSelectedItem] = useState({});
+  const [text,setText] = useState('');
+  const [textList,setTextList] = useState([]);
+  const [modalVisible,setModalVisible] = useState(false);
+  const [selectedItem,setSelectedItem] = useState({});
 
   const handleOnChangeInput = (value) => {
     setText(value);
   }
-  
+
   const addItem = () => {
     console.warn(text);
     console.log(text);
-    if(text !== ''){
-    setTextList([...textList, { id: textList.length + 1, value: text }]);
-    setText('');
+    if (text !== '') {
+      setTextList([
+        ...textList, {
+          id: textList.length + 1,
+          value: text
+        }
+      ]);
+      setText('');
     }
   }
 
@@ -46,47 +48,39 @@ const App = () => {
   }
 
   return (
-    <SafeAreaView 
-      style={styles.container}
-    >
+    <SafeAreaView style={styles.container}>
       <View style={styles.containerInput}>
         <Input
-          placeholder='Type here'
+          placeholder='Completar aqui'
           autoCorrect={false}
           autoFocus={true}
           placeholderTextColor='#841584'
           style={styles.textInput}
           value={text}
-          handleOnChangeText={handleOnChangeInput}
-        />
-        <Button
-          title="Add"
-          color="#841584"
-          onPress={() =>  addItem()}
-          />
+          handleOnChangeText={handleOnChangeInput}/>
+        <Button title="Aceptar" color="#841584" onPress={() => addItem()}/>
       </View>
-        <View style={styles.containerList}>
-          <FlatList
-            data={textList}
-            renderItem={({ item }) => (
-              <TouchableOpacity onPress={() => onHandleModal(item.id)}>
-                <Text style={styles.textList}>{item.value}</Text>
-              </TouchableOpacity>
-            )}
-            keyExtractor={item => item.id.toString()}
-          />
+      <View style={styles.containerList}>
+        <FlatList
+          data={textList}
+          renderItem={({item}) => (
+          <TouchableOpacity onPress={() => onHandleModal(item.id)}>
+            <Text style={styles.textList}>{item.value}</Text>
+          </TouchableOpacity>
+        )}
+          keyExtractor={item => item
+          .id
+          .toString()}/>
       </View>
-        <CustomModal
-          visible={modalVisible}
-          title='Delete Item'
-          description='Are you sure you want to delete this item?'
-          selectedItem={selectedItem}
-          buttonText='Yes'
-          onHandleDeleteItem={handleDeleteItem}
-        />
+      <CustomModal
+        visible={modalVisible}
+        title='Borrar Item'
+        description='Esta seguro que desea eliminar este item?'
+        selectedItem={selectedItem}
+        buttonText='Si'
+        onHandleDeleteItem={handleDeleteItem}/>
     </SafeAreaView>
   );
 };
-
 
 export default App;
